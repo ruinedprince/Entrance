@@ -1,0 +1,17 @@
+Esse documento serve como guia de como deve ocorrer o desenvolvimento da aplicação web "Entrance".
+
+1. **Referência Principal**:
+   - Utilize o arquivo "Projeto Neo Matrix.txt" como referência principal para decisões de adição, edição e exclusão de recursos, como bibliotecas e scripts.
+
+2. **Alterações e Atualizações**:
+   - Considere que este documento e o arquivo "Projeto Neo Matrix.txt" estão sujeitos a alterações. Essas mudanças devem ser levadas em conta para evitar problemas e conflitos durante o desenvolvimento.
+
+3. **Repositório Git**:
+   - O projeto será armazenado no repositório "Entrance" no perfil do GitHub "ruinedprince".
+   - Registre alterações relevantes em branches diferentes, baseando-se no contexto e conhecimento do projeto.
+
+4. **Comandos Git**:
+   - Comandos básicos podem ser executados diretamente, mas ações como "merge" ou outras de alta importância devem ser revisadas pelo responsável.
+
+5. **Documentação**:
+   - Registre pontos de progresso relevantes no arquivo "Documentacao do Desenvolvimento.txt" para manter um histórico claro do desenvolvimento.

@@ -1,0 +1,50 @@
+# Documentação do Desenvolvimento do Projeto Entrance
+
+## 1. Planejamento Inicial
+- **Data**: 30 de abril de 2025
+- **Ações Realizadas**:
+  - Revisão dos requisitos funcionais e não funcionais descritos no arquivo "Projeto Neo Matrix.txt".
+  - Definição do caminho estruturado para o desenvolvimento do projeto, conforme descrito no arquivo "Caminho estruturado.txt".
+  - Escolha inicial de tecnologias sugeridas: React para o frontend, Node.js para o backend e PostgreSQL para o banco de dados.
+  - Configuração do repositório Git no GitHub (perfil: ruinedprince).
+
+## 2. Estruturação do Projeto
+- **Ações Planejadas**:
+  - Configurar o ambiente de desenvolvimento local.
+  - Criar a estrutura inicial do projeto com pastas para frontend, backend e documentação.
+  - Modelar o banco de dados com tabelas para usuários, eventos, ingressos e fotos.
+
+## 3. Desenvolvimento
+- **Próximos Passos**:
+  - Implementar as funcionalidades essenciais: autenticação, cadastro e gerenciamento de eventos.
+  - Garantir segurança e usabilidade, incluindo criptografia de dados sensíveis e design responsivo.
+  - Escrever testes unitários e de integração para cada módulo.
+
+## 4. Revisão e Integração
+- **Planejamento**:
+  - Realizar revisões de código em cada branch antes de fazer merge com a branch `develop`.
+  - Configurar pipelines de CI/CD para automação de testes e deploy.
+
+## 5. Lançamento e Manutenção
+- **Planejamento**:
+  - Realizar o deploy inicial em um ambiente de produção.
+  - Monitorar o desempenho e coletar feedback dos usuários.
+  - Implementar melhorias contínuas com base no feedback e nas sugestões do arquivo "Projeto Neo Matrix.txt".
+
+## 6. Configuração do Ambiente de Front-End
+- **Data**: 30 de abril de 2025
+- **Ações Realizadas**:
+  - Configuração inicial do ambiente de front-end utilizando React.
+  - Instalação de bibliotecas essenciais para o front-end, como React e React-DOM, já presentes no arquivo `package.json`.
+  - Planejamento para estruturação do front-end com componentes reutilizáveis e responsivos.
+
+## 7. Configuração do Repositório Git
+- **Data**: 30 de abril de 2025
+- **Ações Realizadas**:
+  - Inicialização do repositório Git no diretório do projeto.
+  - Configuração do repositório remoto no GitHub: `https://github.com/ruinedprince/Entrance.git`.
+  - Preparação para versionamento do projeto.
+
+- **Motivações**:
+  - Garantir o controle de versão e a rastreabilidade das alterações no projeto.
+  - Facilitar a colaboração e o gerenciamento de branches para diferentes funcionalidades.
