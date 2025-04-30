@@ -44,6 +44,7 @@
   - Inicialização do repositório Git no diretório do projeto.
   - Configuração do repositório remoto no GitHub: `https://github.com/ruinedprince/Entrance.git`.
   - Preparação para versionamento do projeto.
+  - [30/04/2025] Adicionado o arquivo .gitignore para evitar que informações sensíveis ou arquivos desnecessários sejam enviados ao repositório remoto.
 
 - **Motivações**:
   - Garantir o controle de versão e a rastreabilidade das alterações no projeto.
