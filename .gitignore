@@ -1,0 +1,32 @@
+# Node.js dependencies
+node_modules/
+
+# Backend dependencies
+backend/node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Other sensitive or unnecessary files
+documentation/Caminho estruturado.txt
+documentation/Instruções.txt
+documentation/Projeto Neo Matrix.txt
