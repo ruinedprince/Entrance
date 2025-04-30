@@ -24,6 +24,12 @@
     - Índices criados para colunas frequentemente consultadas, como email (usuários) e data (eventos).
 
 ## 3. Desenvolvimento
+- **Data**: 30 de abril de 2025
+- **Ações Realizadas**:
+  - Refatoração do backend para implementar autenticação com hashing de senha e geração de tokens JWT.
+  - Ajustes nas rotas de gerenciamento de eventos para otimização e alinhamento com os requisitos.
+  - Remoção de redundâncias e arquivos desnecessários.
+
 - **Próximos Passos**:
   - Implementar as funcionalidades essenciais: autenticação, cadastro e gerenciamento de eventos.
   - Garantir segurança e usabilidade, incluindo criptografia de dados sensíveis e design responsivo.
