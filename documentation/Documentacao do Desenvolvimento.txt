@@ -14,8 +14,8 @@
   - Estrutura inicial do projeto criada com pastas para frontend, backend e documentação.
   - Modelagem do banco de dados concluída com as seguintes tabelas:
     - **Usuários**: Contém informações como ID, nome, email, senha (criptografada) e data de criação.
-    - **Eventos**: Inclui ID, título, descrição, data, local e organizador (relacionado à tabela de usuários).
-    - **Ingressos**: Contém ID, tipo, preço, evento associado e status (disponível/vendido).
+    - **Eventos**: Inclui ID, título, descrição, data de inicio e data final, local e organizador (relacionado à tabela de usuários).
+    - **Ingressos**: Contém ID, tipo, preço, evento associado, status (disponível/vendido), horario que poderá ser utilizado e se é multiplo ou unitario.
     - **Fotos**: Inclui ID, URL, evento associado e data de upload.
   - Índices e relacionamentos configurados:
     - Relacionamento entre usuários e eventos (um para muitos).
@@ -73,3 +73,14 @@
 - **Motivações**:
   - Garantir o controle de versão e a rastreabilidade das alterações no projeto.
   - Facilitar a colaboração e o gerenciamento de branches para diferentes funcionalidades.
+
+## 9. Backend Refactoring
+- **Date**: 2 May 2025
+- **Actions Taken**:
+  - Separated backend routes into modular files for authentication, events, and tickets.
+  - Updated the database connection logic to be reusable across modules.
+  - Improved logging for better debugging.
+
+- **Next Steps**:
+  - Write unit tests for each route.
+  - Document the API endpoints.
