@@ -4,6 +4,7 @@ from auth_routes import auth_routes
 from ticket_routes import ticket_routes
 from event_routes import event_routes  # Importando o módulo de rotas de eventos
 from utils import execute_query, success_response, error_response
+from db_connection import cursor
 
 app = Flask(__name__)
 CORS(app)
@@ -15,7 +16,11 @@ app.register_blueprint(event_routes)  # Registrando as rotas de eventos
 @app.route('/users', methods=['GET'])
 def get_users():
     try:
+        print("Checking database connection...")
         users = execute_query("SELECT id, nome, email, cpf, telefone, data_nascimento, cidade, estado FROM usuarios", fetch_all=True)
+        cursor.execute("SELECT current_database();")
+        current_db = cursor.fetchone()[0]
+        print(f"Current database: {current_db}")  # Log the current database name
         users_list = [
             {
                 "id": user[0],

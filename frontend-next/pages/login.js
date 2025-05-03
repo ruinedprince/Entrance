@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -23,9 +25,23 @@ export default function Login() {
             }
 
             const data = await response.json();
+            console.log('Response data:', data); // Log full response data for debugging
             alert('Login bem-sucedido!');
-            console.log(data);
-            // Redirecionar ou salvar token, se necessário
+
+            // Redirect based on user role
+            if (data.role) {
+                console.log('Valor de role recebido no frontend:', data.role); // Log para depuração
+                console.log('Redirecting based on role:', data.role);
+                if (data.role === 'administrador') {
+                    router.push('/admin_dashboard');
+                } else if (data.role === 'participante') {
+                    router.push('/participant_dashboard');
+                } else {
+                    console.error('Unknown role:', data.role);
+                }
+            } else {
+                console.error('Role not found in response data:', data);
+            }
         } catch (err) {
             setError('Erro ao conectar ao servidor');
         }

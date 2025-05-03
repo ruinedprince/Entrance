@@ -19,17 +19,6 @@ CREATE TABLE usuarios (
     tipo_usuario VARCHAR(20) DEFAULT 'participante'
 );
 
-UPDATE usuarios SET tipo_usuario = 'Admin' WHERE email = 'admin@example.com';
--- Exibir estrutura da tabela de usuários
-\d usuarios
-
--- Inserir um usuário administrador
-INSERT INTO usuarios (nome, email, senha, tipo_usuario) 
-VALUES ('Administrador', 'teste@teste.com', '123teste', 'admin');
-
--- Atualizar tipo de usuário para administrador
-UPDATE usuarios SET tipo_usuario = 'admin' WHERE email = 'teste@teste.com';
-
 -- Tabela de eventos
 CREATE TABLE eventos (
     id SERIAL PRIMARY KEY,
@@ -41,10 +30,6 @@ CREATE TABLE eventos (
     data_final TIMESTAMP NOT NULL,
     status VARCHAR(20) DEFAULT 'ativo'
 );
-
--- Remover o campo 'titulo' da tabela de eventos
-ALTER TABLE eventos
-DROP COLUMN titulo;
 
 -- Tabela de ingressos
 CREATE TABLE ingressos (
@@ -59,11 +44,6 @@ CREATE TABLE ingressos (
     data_final TIMESTAMP NOT NULL
 );
 
--- Remover colunas desnecessárias da tabela de ingressos
-ALTER TABLE ingressos
-DROP COLUMN horario_utilizacao,
-DROP COLUMN multiplo;
-
 -- Tabela de fotos
 CREATE TABLE fotos (
     id SERIAL PRIMARY KEY,
@@ -75,6 +55,3 @@ CREATE TABLE fotos (
 -- Índices adicionais
 CREATE INDEX idx_email_usuarios ON usuarios(email);
 CREATE INDEX idx_data_eventos ON eventos(data_inicio);
-
--- Atualizar usuários existentes para definir tipos específicos (exemplo)
--- UPDATE usuarios SET tipo_usuario = 'admin' WHERE email = 'admin@example.com';

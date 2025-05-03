@@ -9,7 +9,8 @@ export default function Register() {
         telefone: '',
         data_nascimento: '',
         cidade: '',
-        estado: ''
+        estado: '',
+        tipo_usuario: ''
     });
 
     const handleChange = (e) => {
@@ -67,6 +68,13 @@ export default function Register() {
                 <br />
                 <label htmlFor="estado">Estado:</label>
                 <input type="text" id="estado" name="estado" value={formData.estado} onChange={handleChange} required />
+                <br />
+                <label htmlFor="tipo_usuario">Tipo de Usuário:</label>
+                <select id="tipo_usuario" name="tipo_usuario" value={formData.tipo_usuario} onChange={handleChange} required>
+                    <option value="">Selecione</option>
+                    <option value="participante">Participante</option>
+                    <option value="produtor">Produtor</option>
+                </select>
                 <br />
                 <button type="submit">Cadastrar</button>
             </form>

@@ -1,16 +1,31 @@
 from flask import jsonify
-from db_connection import conn, cursor
+import psycopg2
+from db_connection import conn as global_conn
 
 def execute_query(query, params=None, fetch_one=False, fetch_all=False):
     try:
-        cursor.execute(query, params or ())
-        if fetch_one:
-            return cursor.fetchone()
-        if fetch_all:
-            return cursor.fetchall()
-        conn.commit()
+        with psycopg2.connect(
+            dbname=global_conn.info.dbname,
+            user=global_conn.info.user,
+            password=global_conn.info.password,
+            host=global_conn.info.host,
+            port=global_conn.info.port
+        ) as local_conn:
+            with local_conn.cursor() as cursor:
+                print("Checking database connection...")
+                print("Database connection is active.")  # Log after confirming connection
+                print(f"Executing query: {query}")  # Log the query being executed
+                print(f"With parameters: {params}")  # Log the parameters being passed
+                cursor.execute(query, params or ())
+                print("Query executed successfully.")  # Log after query execution
+                if fetch_one:
+                    return cursor.fetchone()
+                if fetch_all:
+                    return cursor.fetchall()
+                local_conn.commit()
+                print("Transaction committed successfully.")  # Log after commit
     except Exception as e:
-        conn.rollback()
+        print(f"Error during query execution: {e}")
         raise e
 
 def success_response(message, data=None):

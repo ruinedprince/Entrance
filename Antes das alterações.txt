@@ -1,0 +1,1 @@
+Antes das alterações, considere como contexto os conteúdos presentes nos arquivos "Caminho estruturado.txt", "Instruções.txt" e "Projeto Neo Matrix.txt". Altere o conteúdo deles caso julgue necessário conforme o desenvolvimento do projeto. Registre pontos de progressão relevantes no arquivos "Documentacao do Desenvolvimento.txt".
