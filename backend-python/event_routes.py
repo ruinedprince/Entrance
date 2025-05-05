@@ -76,3 +76,23 @@ def get_event_tickets(event_id):
         return success_response("Ingressos buscados com sucesso", {"tickets": tickets_list})
     except Exception as e:
         return error_response("Erro ao buscar ingressos", e)
+
+@event_routes.route('/api/admin/events', methods=['GET'])
+def get_admin_events():
+    try:
+        events = execute_query("SELECT id, nome, descricao, data_inicio, data_final, local, status FROM eventos", fetch_all=True)
+        events_list = [
+            {
+                "id": event[0],
+                "name": event[1],
+                "description": event[2],
+                "start_date": event[3].isoformat() if event[3] else None,
+                "end_date": event[4].isoformat() if event[4] else None,
+                "location": event[5],
+                "status": event[6]
+            }
+            for event in events
+        ]
+        return success_response("Admin events fetched successfully", {"events": events_list})
+    except Exception as e:
+        return error_response("Error fetching admin events", e)

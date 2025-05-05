@@ -1,7 +1,7 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from utils import execute_query, success_response, error_response
 
-ticket_routes = Blueprint('tickets', __name__)
+ticket_routes = Blueprint('ticket_routes', __name__)
 
 @ticket_routes.route('/tickets', methods=['POST'])
 def create_ticket():
@@ -103,3 +103,15 @@ def reserve_ticket():
         return success_response("Ingresso reservado com sucesso")
     except Exception as e:
         return error_response("Erro ao reservar ingresso", e)
+
+@ticket_routes.route('/api/participant/tickets', methods=['GET'])
+def get_participant_tickets():
+    try:
+        # Simulando dados de tickets para participantes
+        tickets = [
+            {"id": 1, "eventName": "Evento A", "date": "2025-05-10", "seat": "A1"},
+            {"id": 2, "eventName": "Evento B", "date": "2025-06-15", "seat": "B2"}
+        ]
+        return jsonify({"tickets": tickets}), 200
+    except Exception as e:
+        return jsonify({"error": "Erro ao buscar tickets", "details": str(e)}), 500

@@ -1,17 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from auth_routes import auth_routes
-from ticket_routes import ticket_routes
-from event_routes import event_routes  # Importando o módulo de rotas de eventos
 from utils import execute_query, success_response, error_response
 from db_connection import cursor
 
 app = Flask(__name__)
 CORS(app)
-
-app.register_blueprint(auth_routes)
-app.register_blueprint(ticket_routes)
-app.register_blueprint(event_routes)  # Registrando as rotas de eventos
 
 @app.route('/users', methods=['GET'])
 def get_users():
@@ -37,6 +30,23 @@ def get_users():
         return success_response("Users fetched successfully", {"users": users_list})
     except Exception as e:
         return error_response("Error fetching users", e)
+
+@app.route('/api/admin/users', methods=['GET'])
+def get_admin_users():
+    try:
+        users = execute_query("SELECT id, nome, email, tipo_usuario FROM usuarios WHERE tipo_usuario = 'administrador'", fetch_all=True)
+        users_list = [
+            {
+                "id": user[0],
+                "name": user[1],
+                "email": user[2],
+                "role": user[3]
+            }
+            for user in users
+        ]
+        return success_response("Admin users fetched successfully", {"users": users_list})
+    except Exception as e:
+        return error_response("Error fetching admin users", e)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
