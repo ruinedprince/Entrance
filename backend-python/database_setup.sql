@@ -8,12 +8,17 @@ CREATE DATABASE entrance;
 CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
+    sobrenome VARCHAR(100),
     email VARCHAR(100) UNIQUE NOT NULL,
+    confirmacao_email VARCHAR(100),
     senha VARCHAR(255) NOT NULL,
+    confirmacao_senha VARCHAR(255),
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     cpf VARCHAR(14),
     telefone VARCHAR(15),
     data_nascimento DATE,
+    cep VARCHAR(10),
+    endereco VARCHAR(255),
     cidade VARCHAR(100),
     estado VARCHAR(2),
     tipo_usuario VARCHAR(20) DEFAULT 'participante'

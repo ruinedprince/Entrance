@@ -1,6 +1,17 @@
 from flask import jsonify
 import psycopg2
 from db_connection import conn as global_conn
+import jwt
+
+SECRET_KEY = "your_secret_key"  # Replace with your actual secret key
+
+def decode_token(token):
+    try:
+        return jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+    except jwt.ExpiredSignatureError:
+        raise Exception("Token has expired")
+    except jwt.InvalidTokenError:
+        raise Exception("Invalid token")
 
 def execute_query(query, params=None, fetch_one=False, fetch_all=False):
     try:

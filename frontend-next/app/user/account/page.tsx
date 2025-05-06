@@ -7,9 +7,10 @@ interface UserData {
   nome: string;
   email: string;
   telefone: string;
+  tipo_usuario: string;
 }
 
-export default function ParticipantDashboard() {
+export default function MyAccount() {
   const router = useRouter();
   const [userData, setUserData] = useState<UserData | null>(null);
 
@@ -52,10 +53,11 @@ export default function ParticipantDashboard() {
 
   return (
     <div>
-      <h1>Bem-vindo ao Painel do Participante</h1>
+      <h1>Minha Conta</h1>
       <p>Nome: {userData.nome}</p>
       <p>Email: {userData.email}</p>
       <p>Telefone: {userData.telefone}</p>
+      <p>Tipo de Conta: {userData.tipo_usuario}</p>
     </div>
   );
 }

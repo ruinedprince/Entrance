@@ -1,151 +1,52 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
+import { useRouter } from "next/navigation";
 
-export default function Register() {
-  const [formData, setFormData] = useState({
-    nome: "",
-    email: "",
-    password: "",
-    cpf: "",
-    telefone: "",
-    data_nascimento: "",
-    cidade: "",
-    estado: "",
-    tipo_usuario: "",
-  });
+export default function RegisterStep1() {
+  const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const updatedFormData = {
-        ...formData,
-        estado: formData.estado.slice(0, 2).toUpperCase(), // Garante que o estado tenha no máximo 2 caracteres
-      };
-
-      const response = await fetch("http://localhost:5000/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedFormData),
-      });
-
-      if (response.ok) {
-        alert("Cadastro realizado com sucesso!");
-      } else {
-        const errorData = await response.json();
-        alert(`Erro: ${errorData.message}`);
-      }
-    } catch (error) {
-      console.error("Erro ao cadastrar:", error);
-      alert("Erro ao cadastrar. Tente novamente mais tarde.");
-    }
+    const formData = {
+      nome: (document.getElementById("nome") as HTMLInputElement).value,
+      sobrenome: (document.getElementById("sobrenome") as HTMLInputElement).value,
+      email: (document.getElementById("email") as HTMLInputElement).value,
+      confirmacao_email: (document.getElementById("confirmacao_email") as HTMLInputElement).value,
+      password: (document.getElementById("password") as HTMLInputElement).value,
+      confirmacao_senha: (document.getElementById("confirmacao_senha") as HTMLInputElement).value,
+      telefone: (document.getElementById("telefone") as HTMLInputElement).value,
+    };
+    localStorage.setItem("registerStep1", JSON.stringify(formData));
+    router.push("/auth/register/step2");
   };
 
   return (
     <div>
-      <h1>Cadastro</h1>
-      <form onSubmit={handleSubmit}>
+      <h1>Cadastro - Etapa 1</h1>
+      <form onSubmit={handleNext}>
         <label htmlFor="nome">Nome:</label>
-        <input
-          type="text"
-          id="nome"
-          name="nome"
-          value={formData.nome}
-          onChange={handleChange}
-          required
-        />
+        <input type="text" id="nome" name="nome" required />
+        <br />
+        <label htmlFor="sobrenome">Sobrenome:</label>
+        <input type="text" id="sobrenome" name="sobrenome" required />
         <br />
         <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
+        <input type="email" id="email" name="email" required />
+        <br />
+        <label htmlFor="confirmacao_email">Confirmação de Email:</label>
+        <input type="email" id="confirmacao_email" name="confirmacao_email" required />
         <br />
         <label htmlFor="password">Senha:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
+        <input type="password" id="password" name="password" required />
         <br />
-        <label htmlFor="cpf">CPF:</label>
-        <input
-          type="text"
-          id="cpf"
-          name="cpf"
-          value={formData.cpf}
-          onChange={handleChange}
-          required
-        />
+        <label htmlFor="confirmacao_senha">Confirmação de Senha:</label>
+        <input type="password" id="confirmacao_senha" name="confirmacao_senha" required />
         <br />
         <label htmlFor="telefone">Telefone:</label>
-        <input
-          type="text"
-          id="telefone"
-          name="telefone"
-          value={formData.telefone}
-          onChange={handleChange}
-          required
-        />
+        <input type="text" id="telefone" name="telefone" required />
         <br />
-        <label htmlFor="data_nascimento">Data de Nascimento:</label>
-        <input
-          type="date"
-          id="data_nascimento"
-          name="data_nascimento"
-          value={formData.data_nascimento}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <label htmlFor="cidade">Cidade:</label>
-        <input
-          type="text"
-          id="cidade"
-          name="cidade"
-          value={formData.cidade}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <label htmlFor="estado">Estado:</label>
-        <input
-          type="text"
-          id="estado"
-          name="estado"
-          value={formData.estado}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <label htmlFor="tipo_usuario">Tipo de Usuário:</label>
-        <select
-          id="tipo_usuario"
-          name="tipo_usuario"
-          value={formData.tipo_usuario}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Selecione</option>
-          <option value="participante">Participante</option>
-          <option value="produtor">Produtor</option>
-        </select>
-        <br />
-        <button type="submit">Cadastrar</button>
+        <button type="submit">Avançar</button>
       </form>
     </div>
   );
