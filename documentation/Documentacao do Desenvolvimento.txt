@@ -14,8 +14,8 @@
   - Estrutura inicial do projeto criada com pastas para frontend, backend e documentação.
   - Modelagem do banco de dados concluída com as seguintes tabelas:
     - **Usuários**: Contém informações como ID, nome, email, senha (criptografada) e data de criação.
-    - **Eventos**: Inclui ID, título, descrição, data, local e organizador (relacionado à tabela de usuários).
-    - **Ingressos**: Contém ID, tipo, preço, evento associado e status (disponível/vendido).
+    - **Eventos**: Inclui ID, título, descrição, data de inicio e data final, local e organizador (relacionado à tabela de usuários).
+    - **Ingressos**: Contém ID, tipo, preço, evento associado, status (disponível/vendido), horario que poderá ser utilizado e se é multiplo ou unitario.
     - **Fotos**: Inclui ID, URL, evento associado e data de upload.
   - Índices e relacionamentos configurados:
     - Relacionamento entre usuários e eventos (um para muitos).
@@ -35,25 +35,34 @@
   - Garantir segurança e usabilidade, incluindo criptografia de dados sensíveis e design responsivo.
   - Escrever testes unitários e de integração para cada módulo.
 
-## 4. Revisão e Integração
+## 4. Atualizações de Funcionalidades
+- **Data**: 1 de maio de 2025
+- **Ações Realizadas**:
+  - Adicionados novos campos à tabela de usuários: cpf, telefone, data de nascimento, cidade e estado.
+  - Planejamento para criação de telas provisórias:
+    - Tela de login (e-mail e senha).
+    - Tela de cadastro (todos os campos da tabela de usuários).
+    - Tela de listagem de usuários cadastrados, com opções de edição e desativação.
+
+## 5. Revisão e Integração
 - **Planejamento**:
   - Realizar revisões de código em cada branch antes de fazer merge com a branch `develop`.
   - Configurar pipelines de CI/CD para automação de testes e deploy.
 
-## 5. Lançamento e Manutenção
+## 6. Lançamento e Manutenção
 - **Planejamento**:
   - Realizar o deploy inicial em um ambiente de produção.
   - Monitorar o desempenho e coletar feedback dos usuários.
   - Implementar melhorias contínuas com base no feedback e nas sugestões do arquivo "Projeto Neo Matrix.txt".
 
-## 6. Configuração do Ambiente de Front-End
+## 7. Configuração do Ambiente de Front-End
 - **Data**: 30 de abril de 2025
 - **Ações Realizadas**:
   - Configuração inicial do ambiente de front-end utilizando React.
   - Instalação de bibliotecas essenciais para o front-end, como React e React-DOM, já presentes no arquivo `package.json`.
   - Planejamento para estruturação do front-end com componentes reutilizáveis e responsivos.
 
-## 7. Configuração do Repositório Git
+## 8. Configuração do Repositório Git
 - **Data**: 30 de abril de 2025
 - **Ações Realizadas**:
   - Inicialização do repositório Git no diretório do projeto.
@@ -64,3 +73,68 @@
 - **Motivações**:
   - Garantir o controle de versão e a rastreabilidade das alterações no projeto.
   - Facilitar a colaboração e o gerenciamento de branches para diferentes funcionalidades.
+
+## 9. Backend Refactoring
+- **Date**: 2 May 2025
+- **Actions Taken**:
+  - Separated backend routes into modular files for authentication, events, and tickets.
+  - Updated the database connection logic to be reusable across modules.
+  - Improved logging for better debugging.
+
+- **Next Steps**:
+  - Write unit tests for each route.
+  - Document the API endpoints.
+
+## 10. Alterações de 5 de maio de 2025
+
+### Página de Login
+- Adicionadas bordas vermelhas temporárias para visualizar o tamanho das `divs`.
+- Ajustadas as bordas da `div` branca:
+  - Bordas da esquerda com 40px.
+  - Bordas da direita com tamanho `sm`.
+- Definidas largura e altura mínimas de 580px para a `div` branca.
+- Adicionado botão "voltar" no canto superior esquerdo da `div` branca:
+  - Sem bordas nem fundo.
+  - Fonte `Poppins Bold`, tamanho 12.
+  - Ajustado posicionamento para respeitar o padding da `div`.
+- Transformados os inputs em um componente reutilizável (`InputField`):
+  - Placeholder com fonte `Poppins Black`, tamanho 12.
+  - Padding vertical de 12px.
+  - Borda com cor `#171717` e tamanho 1px.
+  - Texto com cor `#171717`.
+  - Removida a cor de fundo dos inputs.
+  - Adicionada transição de 0.5s ease-in-out ao foco.
+- Adicionado botão "Esqueci a senha":
+  - Alinhado à direita, acima do botão de login.
+  - Fonte `Poppins Bold`, tamanho 12.
+  - Mantido sublinhado e adicionado hover com opacidade de 50% e transição de 0.5s.
+- Criado componente `LoginButton`:
+  - Cor de fundo `#171717`.
+  - Fonte `Poppins Bold`, tamanho 12.
+  - Bordas arredondadas `sm`.
+  - Hover que altera a cor do texto para `#171717`, remove o fundo e adiciona borda `1px #171717`.
+  - Adicionada altura fixa de 36px.
+  - Substituído botão de login pelo componente.
+- Ajustado texto "Ainda não tem uma conta? Cadastre-se!":
+  - Fonte `Poppins Bold`, tamanho 12.
+  - Mantido sublinhado no link.
+  - Adicionado hover com opacidade de 50% e transição de 0.5s.
+  - Alterada cor do link para `#171717`.
+- Substituída `div` com altura 0px por uma borda com gradiente linear entre `#8A35CE` e `#21CF63`.
+- Criado componente `SocialButton` para os botões "Continuar com":
+  - Fundo transparente.
+  - Fonte `Poppins Bold`, tamanho 12.
+  - Borda `1px #171717`.
+  - Hover com fundo `#171717`, texto `#d9d9d9` e transição de 0.5s.
+  - Garantido alinhamento entre ícones e texto, com espaçamento de 20px.
+  - Centralizado texto e ícones.
+- Ajustada logo:
+  - Substituído quadrado `w-36 h-36` pela imagem `logo-branca.png.webp`.
+  - Definido tamanho de 38x38.
+  - Alinhado horizontalmente ao centro e verticalmente ao topo.
+- Organizados elementos principais:
+  - Logo no topo.
+  - Formulário no centro.
+  - Texto de proteção no rodapé.
+- Removidas bordas vermelhas temporárias.
+- Garantido espaçamento igual de 20px entre as `divs` filhas do formulário.
