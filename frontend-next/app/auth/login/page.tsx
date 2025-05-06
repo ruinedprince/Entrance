@@ -3,11 +3,13 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import "../../globals.css";
-import { ArrowLeft } from "@phosphor-icons/react";
 import { FacebookLogo, GoogleLogo } from "@phosphor-icons/react";
 import InputField from "../../components/InputField";
 import LoginButton from "../../components/LoginButton";
 import SocialButton from "../../components/SocialButton";
+import FormContainer from "@/app/components/FormContainer";
+import BackButton from "@/app/components/BackButton";
+import GreetingText from "../../components/GreetingText";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -65,19 +67,11 @@ export default function Login() {
         alt="Logo"
         className="w-36 object-contain"
       />
-      <div className="relative w-full max-w-md bg-[#d9d9d9] p-8 rounded-lg shadow-md text-center rounded-l-[40px] rounded-r-sm min-w-[580px] mx-auto items-center justify-center gap-5">
-        <button className="inset-y-2 inset-x-2 flex items-center gap-1 text-[12px] font-bold font-poppins hover:opacity-50 transition-opacity duration-500 ease-in-out">
-          <ArrowLeft size={12} weight="bold" />
-          <span>Voltar</span>
-        </button>
-        <h1 className="font-black text-2xl mb-5 text-[#171717]">
-          BEM VINDO(A) DE VOLTA!
-        </h1>
+      <FormContainer>
+        <BackButton />
+        <GreetingText text="BEM VINDO(A) DE VOLTA!" />
         {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-5"
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <InputField
             type="email"
             id="email"
@@ -151,24 +145,8 @@ export default function Login() {
             .
           </p>
         </div>
-      </div>
-      <p className="text-sm text-[#f9f9f9] opacity-50 font-bold font-poppins text-[12px] transition-opacity duration-500 ease-in-out">
-        Esse site é protegido por reCAPTCHA e a{" "}
-        <a
-          href=""
-          className="text-[#f9f9f9] underline hover:opacity-100 transition-opacity duration-500 ease-in-out"
-        >
-          Política de Privacidade
-        </a>{" "}
-        e{" "}
-        <a
-          href=""
-          className="text-[#f9f9f9] underline hover:opacity-100 transition-opacity duration-500 ease-in-out"
-        >
-          Termos de Serviço
-        </a>
-        {" "}do Google se aplicam.
-      </p>
+      </FormContainer>
+      <div></div>
     </div>
   );
 }

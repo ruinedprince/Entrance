@@ -1,6 +1,8 @@
 /* filepath: c:\Users\bibs\Documents\entrance\frontend-next\app\globals.css */
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -9,6 +11,8 @@
 :root {
   --font-poppins: 'Poppins', sans-serif;
   --font-montserrat: 'Montserrat', sans-serif;
+  --font-roboto: 'Roboto', sans-serif;
+  --font-times-new-roman: 'Times New Roman', serif;
   --background: #ffffff;
   --foreground: #171717;
   --color-background: var(--background);
@@ -26,6 +30,7 @@
 
 /* Garantindo que o fundo ocupe toda a tela e removendo margens residuais */
 html, body {
+  font-family: var(--font-times-new-roman), serif; /* Apply Times New Roman globally */
   margin: 0;
   padding: 0;
   width: 100%;

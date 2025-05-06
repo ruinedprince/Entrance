@@ -9,7 +9,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onClick, children }) => {
   return (
     <button
       onClick={onClick}
-      className="p-2 h-[36px] text-[12px] font-bold font-poppins bg-[#171717] text-[#d9d9d9] rounded-sm hover:text-[#171717] hover:bg-transparent hover:border hover:border-[#171717] transition-all duration-500 ease-in-out"
+      className="w-full p-2 h-[36px] text-[12px] font-bold font-poppins bg-[#171717] text-[#d9d9d9] rounded-sm hover:text-[#171717] hover:bg-transparent hover:border hover:border-[#171717] transition-all duration-500 ease-in-out"
     >
       {children}
     </button>
