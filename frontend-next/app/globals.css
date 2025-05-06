@@ -1,6 +1,14 @@
-@import "tailwindcss";
+/* filepath: c:\Users\bibs\Documents\entrance\frontend-next\app\globals.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Montserrat:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
+  --font-poppins: 'Poppins', sans-serif;
+  --font-montserrat: 'Montserrat', sans-serif;
   --background: #ffffff;
   --foreground: #171717;
   --color-background: var(--background);
@@ -28,4 +36,8 @@ html, body {
 #__next {
   width: 100%;
   height: 100%;
+}
+
+.font-poppins {
+  font-family: var(--font-poppins);
 }

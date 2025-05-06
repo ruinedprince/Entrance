@@ -1,5 +1,7 @@
-const config = {
-  plugins: ["tailwindcss", "autoprefixer"],
+// filepath: c:\Users\bibs\Documents\entrance\frontend-next\postcss.config.mjs
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
 };
-
-export default config;
