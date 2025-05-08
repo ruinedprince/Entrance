@@ -1,11 +1,12 @@
 import React from "react";
 
-interface LoginButtonProps {
+interface PatternButtonProps {
   onClick?: () => void;
   children: React.ReactNode;
+  className?: string;
 }
 
-const LoginButton: React.FC<LoginButtonProps> = ({ onClick, children }) => {
+const PatternButton: React.FC<PatternButtonProps> = ({ onClick, children }) => {
   return (
     <button
       onClick={onClick}
@@ -16,4 +17,4 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onClick, children }) => {
   );
 };
 
-export default LoginButton;
+export default PatternButton;

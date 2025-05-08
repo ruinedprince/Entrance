@@ -1,0 +1,82 @@
+import React, { useState } from "react";
+import { User, MagnifyingGlass } from "phosphor-react";
+import FormContainer from "./FormContainer";
+
+const Header: React.FC = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  return (
+    <header className="flex items-center justify-between w-full max-w-[1230px] mx-auto relative mt-2">
+      <div className="flex">
+        <div className="logo">
+          <img
+            src="/images/logo-branca.png.webp"
+            alt="Logo"
+            className="w-40 object-contain"
+          />
+        </div>
+        <div className="search-bar flex ml-5 h-full w-[380px] relative flex items-center backdrop-blur-lg">
+          <div className="absolute inset-y-0 left-4 flex items-center">
+            <MagnifyingGlass size={16} color="#F9F9F9" weight="bold" />
+          </div>
+          <input
+            type="text"
+            placeholder="Procure sua festa"
+            className="w-full h-[40px] pl-10 rounded-full focus:outline-none focus:ring-0 font-bold font-poppins text-xs text-[#f9f9f9] placeholder-[#f9f9f9] bg-[rgba(40,40,40,0.5)]"
+            style={{ border: "none" }}
+          />
+        </div>
+      </div>
+      <div
+        className="profile-icon relative flex items-center justify-center w-[34px] h-[34px] rounded-full bg-[#F9F9F9] cursor-pointer"
+        onClick={() => setMenuOpen((prev) => !prev)}
+      >
+        <User size={16} color="#171717" />
+      </div>
+      {menuOpen && (
+        <div
+          className="bg-[#d9d9d9] absolute right-0 top-0 mt-[40px] shadow-custom-double rounded-md rounded-l-[40px] rounded-r-sm py-8"
+          style={{ zIndex: 1000 }}
+        >
+          <ul className="flex flex-col w-full">
+            <li className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer">
+              Meus Ingressos
+            </li>
+            <li className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer">
+              Meus eventos favoritos
+            </li>
+            <div
+              className="h-px border-t px-4"
+              style={{
+                borderImage: "linear-gradient(to right, #21CF63, #8A35CE) 1",
+              }}
+            ></div>
+            <li className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer">
+              Publicar evento
+            </li>
+            <li className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer">
+              Meus eventos publicados
+            </li>
+            <div
+              className="h-px gap-5 border-t"
+              style={{
+                borderImage: "linear-gradient(to right, #21CF63, #8A35CE) 1",
+              }}
+            ></div>
+            <li
+              className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer text-red-500"
+              onClick={() => {
+                localStorage.removeItem("token"); // Remove o token de autenticação
+                window.location.href = "/auth/login"; // Redireciona para a página de login
+              }}
+            >
+              Sair
+            </li>
+          </ul>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default Header;

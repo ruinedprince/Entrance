@@ -33,8 +33,12 @@ CREATE TABLE eventos (
     descricao TEXT,
     data_inicio TIMESTAMP NOT NULL,
     data_final TIMESTAMP NOT NULL,
-    status VARCHAR(20) DEFAULT 'ativo'
+    status VARCHAR(20) DEFAULT 'ativo',
+    cidade VARCHAR(100),
+    estado VARCHAR(100)
 );
+
+ALTER TABLE eventos ADD COLUMN capa TEXT;
 
 -- Tabela de ingressos
 CREATE TABLE ingressos (
@@ -55,6 +59,16 @@ CREATE TABLE fotos (
     url TEXT NOT NULL,
     evento_id INT REFERENCES eventos(id) ON DELETE CASCADE,
     data_upload TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de events
+CREATE TABLE eventos (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    date DATE NOT NULL,
+    description TEXT,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL
 );
 
 -- Índices adicionais

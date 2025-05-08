@@ -1,11 +1,13 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from utils import execute_query, success_response, error_response, decode_token
 from bcrypt import checkpw, hashpw, gensalt
 import jwt
+from db_connection import cursor
+import datetime
 
 SECRET_KEY = "your_secret_key"  # Replace with your actual secret key
 
-auth_routes = Blueprint('auth_routes', __name__)
+auth_routes = Blueprint('auth', __name__)
 
 @auth_routes.route('/register', methods=['POST'])
 def register():
@@ -32,7 +34,7 @@ def register():
 
     try:
         hashed_password = hashpw(data['password'].encode('utf-8'), gensalt()).decode('utf-8')
-        print("Password hashed successfully")  # Log successful hashing
+        print("Password hashed successfully:", hashed_password)  # Log the generated hash
     except Exception as hash_error:
         print("Error hashing password:", hash_error)  # Log hashing error
         return error_response("Error hashing password", hash_error)
@@ -64,31 +66,37 @@ def login():
         return '', 204
 
     data = request.json
+    email = data.get('email')
+    password = data.get('password')
+
+    print("Login attempt with email:", email)  # Log email being used
+
     try:
-        user = execute_query("SELECT id, nome, email, senha, tipo_usuario FROM usuarios WHERE email = %s", (data['email'],), fetch_one=True)
-        if not user:
-            return error_response("Invalid credentials", status_code=401)
+        cursor.execute("SELECT * FROM usuarios WHERE email = %s", (email,))
+        user = cursor.fetchone()
 
-        print("Database query result:", user)
-        print("Raw password hash from DB:", repr(user[3]))
-        print("Hashed password from DB:", user[3])
-        print("Password comparison result:", checkpw(data['password'].encode('utf-8'), user[3].encode('utf-8')))
+        if user:
+            print("User found in database:", user)  # Log user data
+        else:
+            print("No user found with email:", email)  # Log missing user
 
-        if not checkpw(data['password'].encode('utf-8'), user[3].encode('utf-8')):
-            return error_response("Invalid credentials", status_code=401)
+        if user:
+            print("Provided password:", password)  # Log provided password
+            print("Stored hash:", user[3])  # Log stored hash
 
-        # Generate JWT token
-        token = jwt.encode({"user_id": user[0]}, SECRET_KEY, algorithm="HS256")
-
-        return success_response("Login successful", {
-            "id": user[0],
-            "name": user[1],
-            "email": user[2],
-            "role": user[4],
-            "token": token
-        })
+        if user and checkpw(password.encode('utf-8'), user[3].encode('utf-8')):
+            print("Password match successful")  # Log password match
+            token = jwt.encode({
+                "user_id": user[0],
+                "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+            }, SECRET_KEY, algorithm="HS256")
+            return jsonify({"message": "Login bem-sucedido", "token": token, "user": user, "role": user[10]})
+        else:
+            print("Invalid credentials provided")  # Log invalid credentials
+            return jsonify({"error": "Credenciais inválidas"}), 401
     except Exception as e:
-        return error_response("Error during login", e)
+        print("Error during login process:", str(e))  # Log exception
+        return jsonify({"error": str(e)}), 500
 
 @auth_routes.route('/me', methods=['GET'])
 def me():

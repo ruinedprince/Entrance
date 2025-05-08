@@ -7,7 +7,7 @@ import FormContainer from "@/app/components/FormContainer";
 import InputField from "@/app/components/InputField";
 import BackButton from "@/app/components/BackButton";
 import GreetingText from "@/app/components/GreetingText";
-import LoginButton from "@/app/components/LoginButton";
+import LoginButton from "@/app/components/PatternButton";
 
 export default function RegisterStep2() {
   const router = useRouter();

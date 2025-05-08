@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import "../../globals.css";
 import { FacebookLogo, GoogleLogo } from "@phosphor-icons/react";
 import InputField from "../../components/InputField";
-import LoginButton from "../../components/LoginButton";
+import PatternButton from "../../components/PatternButton";
 import SocialButton from "../../components/SocialButton";
 import FormContainer from "@/app/components/FormContainer";
 import BackButton from "@/app/components/BackButton";
@@ -15,7 +15,21 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,6 +62,8 @@ export default function Login() {
         return;
       }
 
+      console.log("Papel do usuário recebido:", data.role); // Log para depuração
+
       if (data.role === "participante") {
         router.push("/user/account");
       } else if (data.role === "administrador") {
@@ -61,7 +77,10 @@ export default function Login() {
   };
 
   return (
-    <div className="flex flex-col items-center place-content-between h-screen p-[20px]">
+    <div
+      className="flex flex-col items-center place-content-between h-screen p-[20px] gap-5"
+      style={{ overflowX: "hidden" }}
+    >
       <img
         src="/images/logo-branca.png.webp"
         alt="Logo"
@@ -92,12 +111,12 @@ export default function Login() {
           >
             Esqueceu a senha?
           </a>
-          <LoginButton>LOGIN</LoginButton>
+          <PatternButton>LOGIN</PatternButton>
         </form>
-        <p className="text-sm mt-5 font-bold font-poppins text-[12px]">
-          Ainda não tem uma conta?{" "}
+        <p className="text-sm mt-5 font-bold font-poppins text-[12px] text-center">
+          Ainda não tem uma conta? <br className="sm:hidden" />
           <a
-            href="/register"
+            href="/auth/register"
             className="text-[#171717] underline hover:opacity-50 transition-opacity duration-500 ease-in-out"
           >
             Cadastre-se!
@@ -109,13 +128,13 @@ export default function Login() {
             borderImage: "linear-gradient(to right, #21CF63, #8A35CE) 1",
           }}
         ></div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-5">
           <SocialButton>
-            <FacebookLogo size={12} color="#171717" weight="bold" />
+            <FacebookLogo size={isMobile ? 25 : 12} color="#171717" weight="bold" />
             CONTINUAR COM FACEBOOK
           </SocialButton>
           <SocialButton>
-            <GoogleLogo size={12} color="#171717" weight="fill" />
+            <GoogleLogo size={isMobile ? 25 : 12} color="#171717" weight="fill" />
             CONTINUAR COM GOOGLE
           </SocialButton>
           <p className="text-sm mt-5 font-bold font-poppins text-center text-[12px]">

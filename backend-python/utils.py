@@ -2,6 +2,21 @@ from flask import jsonify
 import psycopg2
 from db_connection import conn as global_conn
 import jwt
+import logging
+
+# Configuração básica de logging
+logging.basicConfig(
+    level=logging.ERROR,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("error.log"),
+        logging.StreamHandler()
+    ]
+)
+
+def log_error(error_message):
+    logger = logging.getLogger("ApplicationError")
+    logger.error(error_message)
 
 SECRET_KEY = "your_secret_key"  # Replace with your actual secret key
 
@@ -37,6 +52,7 @@ def execute_query(query, params=None, fetch_one=False, fetch_all=False):
                 print("Transaction committed successfully.")  # Log after commit
     except Exception as e:
         print(f"Error during query execution: {e}")
+        log_error(f"Error during query execution: {e}")  # Log error using logging
         raise e
 
 def success_response(message, data=None):
@@ -49,4 +65,17 @@ def error_response(message, error=None, status_code=500):
     response = {"message": message}
     if error:
         response["error"] = str(error)
+        log_error(f"Error response: {error}")  # Log error using logging
     return jsonify(response), status_code
+
+# Script para testar manualmente a correspondência entre senha e hash
+if __name__ == "__main__":
+    from bcrypt import checkpw
+
+    senha_fornecida = "123teste123"
+    hash_armazenado = "$2b$12$wU3B6pi67OJWD0CZZWZMeuM7Uk/3Hi05SdtY8UGizX09WqTJwv.1e"
+
+    if checkpw(senha_fornecida.encode('utf-8'), hash_armazenado.encode('utf-8')):
+        print("A senha fornecida corresponde ao hash armazenado.")
+    else:
+        print("A senha fornecida NÃO corresponde ao hash armazenado.")
