@@ -35,7 +35,7 @@ const EventRegisterPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/admin/events', {
+      const response = await fetch('http://localhost:5000/api/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,9 +92,10 @@ const EventRegisterPage = () => {
               if (file) {
                 const formData = new FormData();
                 formData.append("file", file);
+                formData.append("event_id", "1"); // Substituir pelo ID real do evento, se disponível
 
                 try {
-                  const response = await fetch("http://localhost:5000/api/admin/events/upload", {
+                  const response = await fetch("http://localhost:5000/api/events/upload", {
                     method: "POST",
                     body: formData,
                   });

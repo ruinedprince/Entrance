@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 from utils import execute_query, success_response, error_response
 from app import get_db_connection
 
-UPLOAD_FOLDER = 'uploads/'
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 def allowed_file(filename):
@@ -19,9 +19,9 @@ def events():
         data = request.json
         try:
             event_id = execute_query(
-                """INSERT INTO eventos (nome, descricao, data_inicio, data_final, local, organizador_id, status) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id""",
-                (data.get('nome'), data.get('descricao'), data.get('data_inicio'), data.get('data_final'), data.get('local'), data.get('organizador_id'), data.get('status')),
+                """INSERT INTO eventos (nome, descricao, data_inicio, data_final, local, organizador_id, status, capa, cidade, estado) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id""",
+                (data.get('nome'), data.get('descricao'), data.get('data_inicio'), data.get('data_final'), data.get('local'), data.get('organizador_id'), data.get('status'), data.get('capa'), data.get('cidade'), data.get('estado')),
                 fetch_one=True
             )[0]
             return success_response("Evento cadastrado com sucesso", {"eventId": event_id})
@@ -32,7 +32,7 @@ def events():
             return error_response("Erro ao cadastrar evento", {"details": str(e)})
     elif request.method == 'GET':
         try:
-            events = execute_query("SELECT id, nome, descricao, data_inicio, data_final, local, organizador_id, status FROM eventos", fetch_all=True)
+            events = execute_query("SELECT id, nome, descricao, data_inicio, data_final, local, organizador_id, status, capa, cidade, estado FROM eventos", fetch_all=True)
             events_list = [
                 {
                     "id": event[0],
@@ -42,7 +42,10 @@ def events():
                     "data_final": event[4].isoformat() if event[4] else None,
                     "local": event[5],
                     "organizador_id": event[6],
-                    "status": event[7]
+                    "status": event[7],
+                    "capa": event[8],
+                    "cidade": event[9],
+                    "estado": event[10]
                 }
                 for event in events
             ]
@@ -99,7 +102,7 @@ def get_event_tickets(event_id):
         print("Erro ao buscar ingressos:", error_details)
         return error_response("Erro ao buscar ingressos", {"details": str(e)})
 
-@event_routes.route('/api/admin/events', methods=['GET', 'OPTIONS'])
+@event_routes.route('/events', methods=['GET', 'OPTIONS'])
 def get_events():
     if request.method == 'OPTIONS':
         response = jsonify({})
@@ -129,7 +132,7 @@ def get_events():
 
         result = [
             {
-                "capa": event[0],
+                "capa": f"/uploads{event[0]}",
                 "nome": event[1],
                 "data_inicio": event[2],
                 "horario_inicio": str(event[3]),
@@ -142,7 +145,7 @@ def get_events():
         cursor.close()
         conn.close()
 
-        return jsonify(result), 200
+        return jsonify({"events": result}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -202,7 +205,7 @@ def reverse_geocode():
         print("Error fetching location:", error_details)
         return error_response("Error fetching location", {"details": str(e)})
 
-@event_routes.route('/api/admin/events/upload', methods=['POST'])
+@event_routes.route('/events/upload', methods=['POST'])
 def upload_event_cover():
     if 'file' not in request.files or 'event_id' not in request.form:
         return jsonify({"error": "Arquivo ou ID do evento não fornecido."}), 400
@@ -218,7 +221,20 @@ def upload_event_cover():
         timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
         filename = secure_filename(f"{timestamp}_{file.filename}")
         upload_path = os.path.join(UPLOAD_FOLDER, 'eventos', 'capa', filename)
-        file.save(upload_path)
+        
+        # Criar diretório se não existir
+        os.makedirs(os.path.dirname(upload_path), exist_ok=True)
+        
+        # Adicionar logs para depuração
+        print(f"Recebendo arquivo: {file.filename}")
+        print(f"Caminho de upload: {upload_path}")
+
+        try:
+            file.save(upload_path)
+            print(f"Arquivo salvo com sucesso em: {upload_path}")
+        except Exception as e:
+            print(f"Erro ao salvar o arquivo: {e}")
+            return jsonify({"error": "Erro ao salvar o arquivo."}), 500
 
         # Retornar o caminho relativo para salvar no banco de dados
         return jsonify({"path": f"/uploads/eventos/capa/{filename}"}), 200
