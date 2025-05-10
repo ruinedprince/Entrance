@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { User, MagnifyingGlass } from "phosphor-react";
+import { User, MagnifyingGlass, Heart, Ticket,CalendarPlus, Calendar, SignOut } from "phosphor-react";
 import FormContainer from "./FormContainer";
 
 const Header: React.FC = () => {
@@ -8,16 +8,16 @@ const Header: React.FC = () => {
   return (
     <header className="flex items-center justify-between w-full max-w-[1230px] mx-auto relative mt-2">
       <div className="flex">
-        <div className="logo">
+        <a href="/" className="logo">
           <img
             src="/images/logo-branca.png.webp"
             alt="Logo"
             className="w-40 object-contain"
           />
-        </div>
+        </a>
         <div className="search-bar flex ml-5 h-full w-[380px] relative flex items-center backdrop-blur-lg">
           <div className="absolute inset-y-0 left-4 flex items-center">
-            <MagnifyingGlass size={16} color="#F9F9F9" weight="bold" />
+            <MagnifyingGlass size={16} color="#21CF63" weight="bold" />
           </div>
           <input
             type="text"
@@ -28,7 +28,7 @@ const Header: React.FC = () => {
         </div>
       </div>
       <div
-        className="profile-icon relative flex items-center justify-center w-[34px] h-[34px] rounded-full bg-[#F9F9F9] cursor-pointer"
+        className="profile-icon relative flex items-center justify-center w-[34px] h-[34px] rounded-full bg-[#21CF63] cursor-pointer"
         onClick={() => setMenuOpen((prev) => !prev)}
       >
         <User size={16} color="#171717" />
@@ -38,12 +38,12 @@ const Header: React.FC = () => {
           className="bg-[#d9d9d9] absolute right-0 top-0 mt-[40px] shadow-custom-double rounded-md rounded-l-[40px] rounded-r-sm py-8"
           style={{ zIndex: 1000 }}
         >
-          <ul className="flex flex-col w-full">
-            <li className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer">
-              Meus Ingressos
+          <ul className="flex flex-col w-full font-poppins font-bold text-xs">
+            <li className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer flex items-center">
+             <Ticket className= "mr-5"size={24} color="#131211" weight="bold"/> Meus Ingressos
             </li>
-            <li className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer">
-              Meus eventos favoritos
+            <li className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer flex items-center">
+             <Heart className="mr-5" size={24} color="#131211" weight="bold" /> Eventos favoritos
             </li>
             <div
               className="h-px border-t px-4"
@@ -51,11 +51,11 @@ const Header: React.FC = () => {
                 borderImage: "linear-gradient(to right, #21CF63, #8A35CE) 1",
               }}
             ></div>
-            <li className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer">
-              Publicar evento
+            <li className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer flex items-center">
+             <CalendarPlus className="mr-5"size={24} color="#131211" weight="bold" /> Publicar evento
             </li>
-            <li className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer">
-              Meus eventos publicados
+            <li className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer flex items-center">
+             <Calendar className="mr-5" size={24} color="#131211" weight="bold" /> Meus eventos publicados
             </li>
             <div
               className="h-px gap-5 border-t"
@@ -64,13 +64,13 @@ const Header: React.FC = () => {
               }}
             ></div>
             <li
-              className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer text-red-500"
+              className="px-8 py-2 hover:bg-[rgba(40,40,40,0.5)] cursor-pointer text-red-500 flex items-center"
               onClick={() => {
                 localStorage.removeItem("token"); // Remove o token de autenticação
                 window.location.href = "/auth/login"; // Redireciona para a página de login
               }}
             >
-              Sair
+             <SignOut className="mr-5"size={24} color="#ff0000" weight="bold" /> Sair
             </li>
           </ul>
         </div>

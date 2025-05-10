@@ -95,7 +95,7 @@ const EventRegisterPage = () => {
                 formData.append("event_id", "1"); // Substituir pelo ID real do evento, se disponível
 
                 try {
-                  const response = await fetch("http://localhost:5000/api/events/upload", {
+                  const response = await fetch("http://localhost:5000/api/events/register", {
                     method: "POST",
                     body: formData,
                   });
