@@ -1,12 +1,10 @@
 -- Criação do banco de dados
-CREATE DATABASE entrance;
-
--- Conectar ao banco de dados
-\c entrance;
+CREATE DATABASE IF NOT EXISTS entrance;
+USE entrance;
 
 -- Tabela de usuários
-CREATE TABLE usuarios (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     sobrenome VARCHAR(100),
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -25,50 +23,43 @@ CREATE TABLE usuarios (
 );
 
 -- Tabela de eventos
-CREATE TABLE eventos (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS eventos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     local VARCHAR(255) NOT NULL,
-    organizador_id INT REFERENCES usuarios(id) ON DELETE CASCADE,
+    organizador_id INT,
     descricao TEXT,
     data_inicio TIMESTAMP NOT NULL,
     data_final TIMESTAMP NOT NULL,
     status VARCHAR(20) DEFAULT 'ativo',
     cidade VARCHAR(100),
-    estado VARCHAR(100)
+    estado VARCHAR(100),
+    capa TEXT,
+    slug VARCHAR(255) UNIQUE,
+    FOREIGN KEY (organizador_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
-ALTER TABLE eventos ADD COLUMN capa TEXT;
-
 -- Tabela de ingressos
-CREATE TABLE ingressos (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS ingressos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     tipo VARCHAR(50) NOT NULL,
     preco DECIMAL(10, 2) NOT NULL,
-    evento_id INT REFERENCES eventos(id) ON DELETE CASCADE,
+    evento_id INT,
     foto TEXT,
     status VARCHAR(20) DEFAULT 'disponivel',
     quantidade_disponivel INT NOT NULL,
     data_inicio TIMESTAMP NOT NULL,
-    data_final TIMESTAMP NOT NULL
+    data_final TIMESTAMP NOT NULL,
+    FOREIGN KEY (evento_id) REFERENCES eventos(id) ON DELETE CASCADE
 );
 
 -- Tabela de fotos
-CREATE TABLE fotos (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS fotos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     url TEXT NOT NULL,
-    evento_id INT REFERENCES eventos(id) ON DELETE CASCADE,
-    data_upload TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Tabela de events
-CREATE TABLE eventos (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    date DATE NOT NULL,
-    description TEXT,
-    city VARCHAR(100) NOT NULL,
-    state VARCHAR(100) NOT NULL
+    evento_id INT,
+    data_upload TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (evento_id) REFERENCES eventos(id) ON DELETE CASCADE
 );
 
 -- Índices adicionais

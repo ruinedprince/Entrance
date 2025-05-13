@@ -39,20 +39,24 @@ def register():
         print("Error hashing password:", hash_error)  # Log hashing error
         return error_response("Error hashing password", hash_error)
 
+    # Validate and format 'data_nascimento'
     try:
-        user_id = execute_query(
+        data['data_nascimento'] = datetime.datetime.strptime(data['data_nascimento'], '%Y-%m-%d').date()
+    except ValueError:
+        print("Invalid date format for 'data_nascimento'")
+        return error_response("Invalid date format for 'data_nascimento'. Expected format: YYYY-MM-DD")
+
+    try:
+        execute_query(
             """INSERT INTO usuarios (nome, sobrenome, email, senha, cpf, telefone, data_nascimento, cep, endereco, cidade, estado, tipo_usuario) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id""",
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
             (
                 data['nome'], data['sobrenome'], data['email'], hashed_password, data['cpf'],
                 data['telefone'], data['data_nascimento'], data['cep'], data['endereco'],
                 data['cidade'], data['estado'], data['tipo_usuario']
-            ),
-            fetch_one=True
+            )
         )
-        if user_id is None:
-            raise Exception("No ID returned from the database.")
-        user_id = user_id[0]
+        user_id = execute_query("SELECT LAST_INSERT_ID()", fetch_one=True)[0]
         print("User registered successfully with ID:", user_id)  # Log successful registration
     except Exception as db_error:
         print("Error registering user:", db_error)  # Log database error
@@ -82,15 +86,20 @@ def login():
 
         if user:
             print("Provided password:", password)  # Log provided password
-            print("Stored hash:", user[3])  # Log stored hash
+            print("Stored hash:", user[5])  # Log stored hash
 
-        if user and checkpw(password.encode('utf-8'), user[3].encode('utf-8')):
+            # Validate hash format
+            if not user[5].startswith('$2b$'):
+                print("Invalid hash format detected")
+                return jsonify({"error": "Invalid hash format"}), 500
+
+        if user and checkpw(password.encode('utf-8'), user[5].encode('utf-8')):
             print("Password match successful")  # Log password match
             token = jwt.encode({
                 "user_id": user[0],
                 "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
             }, SECRET_KEY, algorithm="HS256")
-            return jsonify({"message": "Login bem-sucedido", "token": token, "user": user, "role": user[10]})
+            return jsonify({"message": "Login bem-sucedido", "token": token, "user": user, "role": user[15]})
         else:
             print("Invalid credentials provided")  # Log invalid credentials
             return jsonify({"error": "Credenciais inválidas"}), 401

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import "../../globals.css";
+import "@/app/globals.css";
 import { FacebookLogo, GoogleLogo } from "@phosphor-icons/react";
 import InputField from "../../components/InputField";
 import PatternButton from "../../components/PatternButton";

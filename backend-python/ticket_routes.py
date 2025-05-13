@@ -9,10 +9,10 @@ def create_ticket():
     try:
         ticket_id = execute_query(
             """INSERT INTO ingressos (evento_id, tipo, preco) 
-            VALUES (%s, %s, %s) RETURNING id""",
-            (data.get('evento_id'), data.get('tipo'), data.get('preco')),
-            fetch_one=True
-        )[0]
+            VALUES (%s, %s, %s)""",
+            (data.get('evento_id'), data.get('tipo'), data.get('preco'))
+        )
+        ticket_id = execute_query("SELECT LAST_INSERT_ID()", fetch_one=True)[0]
         return success_response("Ingresso cadastrado com sucesso", {"ticketId": ticket_id})
     except Exception as e:
         return error_response("Erro ao cadastrar ingresso", e)
@@ -81,10 +81,12 @@ def reserve_ticket():
 
             execute_query(
                 """INSERT INTO usuarios (nome, email, senha, cpf, telefone, data_nascimento, cidade, estado) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id""",
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
                 (new_user_data['nome'], new_user_data['email'], new_user_data['password'], new_user_data['cpf'],
                  new_user_data['telefone'], new_user_data['data_nascimento'], new_user_data['cidade'], new_user_data['estado'])
             )
+
+            user_id = execute_query("SELECT LAST_INSERT_ID()", fetch_one=True)[0]
 
         ticket_id = data.get('ticket_id')
         if not ticket_id:

@@ -3,8 +3,12 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/app/components/Header";
 import { apiFetch } from "@/app/utils/api";
+import { useRouter } from "next/navigation";
+import { ArrowUpRight } from "phosphor-react";
+import BlobComponent from "../../components/Blob";
 
 const Agenda = () => {
+  const router = useRouter();
   const [events, setEvents] = useState<
     {
       nome: string;
@@ -13,6 +17,7 @@ const Agenda = () => {
       city: string;
       local: string;
       capa?: string;
+      slug?: string;
     }[]
   >([]);
   const [page, setPage] = useState(1);
@@ -40,6 +45,7 @@ const Agenda = () => {
           descricao: string;
           city: string;
           local: string;
+          slug?: string;
         }) => ({
           ...event,
           capa: event.capa ? `http://localhost:5000${event.capa}` : undefined,
@@ -102,6 +108,7 @@ const Agenda = () => {
             city: string;
             local: string;
             capa?: string;
+            slug?: string;
           }) => ({
             ...event,
             capa: event.capa ? `http://localhost:5000${event.capa}` : undefined,
@@ -118,6 +125,10 @@ const Agenda = () => {
 
   useEffect(() => {
     console.log("Eventos carregados:", events);
+    const eventosSemSlug = events.filter((event) => !event.slug);
+    if (eventosSemSlug.length > 0) {
+      console.warn("Eventos sem slug:", eventosSemSlug);
+    }
   }, [events]);
 
   useEffect(() => {
@@ -138,18 +149,32 @@ const Agenda = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleEventClick = (event: { slug?: string }) => {
+    if (!event || !event.slug) {
+      alert("Este evento não possui um link válido no momento.");
+      console.error("Slug não definido para o evento:", event);
+      return;
+    }
+    console.log("Evento clicado:", event);
+    router.push(`/event/details/${event.slug}`);
+  };
+
   return (
     <>
+      <div className="absolute flex place-content-center h-full w-full justify-center items-center">
+        <BlobComponent />
+      </div>
       <Header />
       <div className="flex text-[#F9F9F9] mt-5 mb-10 font-montserrat place-content-center">
-        <div className="flex flex-col items-center w-[480px] w-[80px]">
+        <div className="flex flex-col items-center">
           <h1 className="text-4xl text-center font-black font-montserrat mb-5 uppercase">
-            Eventos em {location.toUpperCase()}
+            Eventos em {location}
           </h1>
           <div className="flex justify-between items-center w-full max-w-[1230px] font-bold font-poppins mb-10">
             <p className="text-sm text-left">{totalEvents} eventos</p>
-            <button className="px-4 py-2 bg-[#282828] text-[#F9F9F9] text-sm rounded uppercase">
+            <button className="flex px-4 py-2 bg-[#282828] text-[#F9F9F9] text-sm rounded uppercase gap-5 items-center">
               Publicar Evento
+              <ArrowUpRight size={16} color="#f9f9f9" weight="bold" />
             </button>
           </div>
           <div className="flex justify-center font-black font-montserrat">
@@ -183,23 +208,30 @@ const Agenda = () => {
           </div>
         </div>
       </div>
+      <div
+        className="h-px gap-5 border-t max-w-[1230px] mx-auto my-10"
+        style={{
+          borderImage: "linear-gradient(to right, #21CF63, #8A35CE) 1",
+        }}
+      ></div>
       <div className="flex place-content-center">
-        <div className="w-full max-w-[1230px] flex-col place-content-center">
-          <h1 className="text-2xl font-black font-montserrat mb-5 text-[#F9F9F9] uppercase">
+        <div className="w-full max-w-[1230px] flex-col place-content-center ">
+          <h1 className="text-2xl font-black font-montserrat mb-10 text-[#F9F9F9] uppercase ">
             Próximos eventos em {location}
           </h1>
-          <div className="flex flex-col items-center h-auto overflow-y-auto py-5 pl-[550px]">
-            <div className="flex flex-row overflow-x-auto scrollbar-bold scrollbar-thumb-gray-500 scrollbar-track-gray-300 gap-5">
-              {Array.isArray(events) && events.length > 0 ? (
+          <div className="relative flex flex-col items-center overflow-y-auto h-[440px] py-5 mb-5">
+            <div className="absolute flex flex-row left-0 top-0 overflow-x-auto scrollbar-bold scrollbar-thumb-gray-500 scrollbar-track-gray-300 items-center">
+              {Array.isArray(events) &&
                 events.slice(0, 10).map((event, index) => (
                   <div
                     key={index}
-                    className="group relative h-[320px] w-[220px] overflow-hidden rounded-l-[40px] rounded-r-sm shadow-lg mr-4"
+                    className="group relative h-[440px] w-[300px] overflow-hidden rounded-l-[40px] rounded-r-sm shadow-lg mr-4 cursor-pointer"
                     style={{
                       backgroundImage: `url(${event.capa})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                     }}
+                    onClick={() => handleEventClick(event)}
                   >
                     <div className="flex flex-col place-content-center absolute bottom-0 w-full translate-y-full backdrop-blur-sm bg-[rgba(40,40,40,0.5)] p-4 text-white transition-transform duration-500 group-hover:translate-y-0">
                       <h3 className="text-lg font-black font-montserrat uppercase">
@@ -217,18 +249,26 @@ const Agenda = () => {
                       </p>
                     </div>
                   </div>
-                ))
-              ) : (
-                <div className="flex items-center justify-center h-full w-full">
-                  <button className="px-4 py-2 bg-[#282828] text-[#F9F9F9] text-sm rounded uppercase">
-                    Mais eventos em {location}
-                  </button>
-                </div>
-              )}
+                ))}
             </div>
+          </div>
+
+          <div className="flex w-full place-content-center">
+            <button className="p-3 text-xs font-black font-montserrat uppercase bg-[rgba(40,40,40,0.5)] text-[#f9f9f9] rounded-md relative overflow-hidden transition-all duration-500 ease-in-out">
+              <span className="absolute place-content-center inset-0 bg-gradient-to-r from-[#21CF63] to-[#8A35CE] opacity-0 hover:shadow-custom-double hover:opacity-100 transition-opacity duration-500 ease-in-out">
+                Descobrir novos eventos
+              </span>
+              Descobrir novos eventos
+            </button>
           </div>
         </div>
       </div>
+      <div
+        className="h-px gap-5 border-t max-w-[1230px] mx-auto my-10"
+        style={{
+          borderImage: "linear-gradient(to right, #21CF63, #8A35CE) 1",
+        }}
+      ></div>
       {loading && <p>Carregando...</p>}
       {!hasMore && <p>Não há mais eventos para carregar.</p>}
     </>

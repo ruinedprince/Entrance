@@ -1,8 +1,9 @@
 from flask import jsonify
 import psycopg2
-from db_connection import conn as global_conn
+from db_connection import get_db_connection
 import jwt
 import logging
+import mysql.connector
 
 # Configuração básica de logging
 logging.basicConfig(
@@ -30,13 +31,7 @@ def decode_token(token):
 
 def execute_query(query, params=None, fetch_one=False, fetch_all=False):
     try:
-        with psycopg2.connect(
-            dbname=global_conn.info.dbname,
-            user=global_conn.info.user,
-            password=global_conn.info.password,
-            host=global_conn.info.host,
-            port=global_conn.info.port
-        ) as local_conn:
+        with get_db_connection() as local_conn:
             with local_conn.cursor() as cursor:
                 print("Checking database connection...")
                 print("Database connection is active.")  # Log after confirming connection

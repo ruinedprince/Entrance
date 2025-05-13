@@ -67,7 +67,7 @@ export default function TicketRegister() {
         <select id="evento_id" name="evento_id" value={formData.evento_id} onChange={handleChange} required>
           <option value="">Selecione um evento</option>
           {events.map((event) => (
-            <option key={event.id} value={event.id}>{event.nome}</option>
+            <option key={event.id} value={event.id} onClick={() => window.location.href = `/event/details?id=${event.nome}`}>{event.nome}</option>
           ))}
         </select>
         <br />

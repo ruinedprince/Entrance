@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { User, MagnifyingGlass, Heart, Ticket,CalendarPlus, Calendar, SignOut } from "phosphor-react";
-import FormContainer from "./FormContainer";
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);

@@ -2,6 +2,15 @@
 
 import React, { useState } from 'react';
 
+const generateSlug = (name: string): string => {
+  const timestamp = Date.now(); // Adiciona um timestamp para garantir unicidade
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // Substitui caracteres não alfanuméricos por hifens
+    .replace(/(^-|-$)/g, '') // Remove hifens no início ou no final
+    + `-${timestamp}`; // Adiciona o timestamp no final
+};
+
 const EventRegisterPage = () => {
   const [formData, setFormData] = useState<{
     nome: string;
@@ -35,12 +44,15 @@ const EventRegisterPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const slug = generateSlug(formData.nome); // Gera o slug com base no nome do evento
+      const eventData = { ...formData, slug }; // Adiciona o slug aos dados do evento
+
       const response = await fetch('http://localhost:5000/api/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(eventData),
       });
 
       const responseData = await response.json();
