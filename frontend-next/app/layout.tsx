@@ -23,9 +23,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="Pt-BR" >
       <body>
-        
-      <div className="flex place-content-center">
-      </div>
         {children}
       </body>
     </html>

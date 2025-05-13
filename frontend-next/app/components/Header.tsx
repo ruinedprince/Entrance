@@ -14,7 +14,7 @@ const Header: React.FC = () => {
             className="w-40 object-contain"
           />
         </a>
-        <div className="search-bar flex ml-5 h-full w-[380px] relative flex items-center backdrop-blur-lg">
+        <div className="search-bar flex ml-5 h-full w-[380px] relative flex items-center rounded-full backdrop-blur-sm">
           <div className="absolute inset-y-0 left-4 flex items-center">
             <MagnifyingGlass size={16} color="#21CF63" weight="bold" />
           </div>

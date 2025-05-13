@@ -3,6 +3,10 @@
 import React, { useState, useEffect } from "react";
 import * as flubber from "flubber";
 
+type BlobProps = {
+  className?: string;
+};
+
 const blobPaths = [
   "M17.8,-37C24.4,-27.1,31.9,-24.9,45.6,-20.1C59.2,-15.2,79,-7.6,80,0.6C81,8.7,63.1,17.4,48,19.8C32.9,22.2,20.6,18.4,13.1,26.4C5.6,34.4,2.8,54.3,-5.8,64.3C-14.3,74.3,-28.7,74.4,-34.5,65.4C-40.3,56.3,-37.5,38.2,-45.6,25.8C-53.7,13.4,-72.6,6.7,-80.4,-4.5C-88.3,-15.7,-85,-31.5,-76.4,-42.9C-67.8,-54.4,-53.8,-61.7,-40.1,-67.5C-26.5,-73.3,-13.3,-77.8,-3.8,-71.2C5.6,-64.6,11.3,-46.9,17.8,-37Z",
   "M22.3,-36.9C31.7,-33.2,44.1,-32.9,53,-27.3C61.9,-21.7,67.3,-10.9,64.4,-1.7C61.4,7.5,50.1,14.9,44.7,26.5C39.2,38,39.6,53.7,33.1,56.5C26.7,59.4,13.3,49.5,0.2,49.1C-12.9,48.7,-25.7,57.8,-31.2,54.3C-36.7,50.9,-34.8,34.9,-31.6,23.8C-28.5,12.7,-24.1,6.3,-22,1.2C-20,-3.9,-20.2,-7.8,-18.5,-10.7C-16.9,-13.6,-13.4,-15.4,-10,-22.5C-6.6,-29.6,-3.3,-42.1,1.6,-44.8C6.4,-47.5,12.9,-40.5,22.3,-36.9Z",
@@ -14,55 +18,55 @@ const blobPaths = [
   "M20.1,-44.3C21.5,-34.1,15,-19.5,13,-11.4C10.9,-3.2,13.4,-1.6,20.4,4C27.3,9.6,38.6,19.2,38.6,23.8C38.6,28.3,27.1,27.8,18.8,30.9C10.5,34.1,5.2,40.9,0.4,40.3C-4.5,39.6,-8.9,31.4,-14.3,26.5C-19.6,21.6,-25.8,20,-24,16.2C-22.2,12.3,-12.5,6.2,-19.9,-4.3C-27.4,-14.8,-52,-29.5,-54.9,-35.2C-57.7,-40.9,-38.7,-37.4,-25.9,-41.1C-13.1,-44.7,-6.5,-55.3,1.4,-57.8C9.4,-60.2,18.7,-54.4,20.1,-44.3Z",
 ];
 
-const BlobComponent = () => {
-    const [currentPath, setCurrentPath] = useState(blobPaths[0]);
-    const [currentPathIndex, setCurrentPathIndex] = useState(0);
+const Blob: React.FC<BlobProps> = ({ className }) => {
+  const [currentPath, setCurrentPath] = useState(blobPaths[0]);
+  const [currentPathIndex, setCurrentPathIndex] = useState(0);
 
-    const transitionTime = 10000; // Time for the transition in milliseconds
-    const intervalTime = 10000; // Time between transitions in milliseconds
+  const transitionTime = 10000; // Time for the transition in milliseconds
+  const intervalTime = 5000; // Time between transitions in milliseconds
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const nextIndex = (currentPathIndex + 1) % blobPaths.length;
-            const interpolator = flubber.interpolate(
-                blobPaths[currentPathIndex],
-                blobPaths[nextIndex]
-            );
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const nextIndex = (currentPathIndex + 1) % blobPaths.length;
+      const interpolator = flubber.interpolate(
+        blobPaths[currentPathIndex],
+        blobPaths[nextIndex]
+      );
 
-            let frame = 0;
-            const totalFrames = transitionTime / (1000 / 60); // Calculate frames based on transition time
-            const easeInOut = (t: number) =>
-                t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; // EaseInOut function
-            const animate = () => {
-                frame++;
-                if (frame <= totalFrames) {
-                    const progress = easeInOut(frame / totalFrames);
-                    setCurrentPath(interpolator(progress));
-                    requestAnimationFrame(animate);
-                } else {
-                    setCurrentPathIndex(nextIndex);
-                }
-            };
+      let frame = 0;
+      const totalFrames = transitionTime / (1000 / 60); // Calculate frames based on transition time
+      const easeInOut = (t: number) =>
+        t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; // EaseInOut function
+      const animate = () => {
+        frame++;
+        if (frame <= totalFrames) {
+          const progress = easeInOut(frame / totalFrames);
+          setCurrentPath(interpolator(progress));
+          requestAnimationFrame(animate);
+        } else {
+          setCurrentPathIndex(nextIndex);
+        }
+      };
 
-            animate();
-        }, intervalTime);
+      animate();
+    }, intervalTime);
 
-        return () => clearInterval(interval);
-    }, [currentPathIndex]);
+    return () => clearInterval(interval);
+  }, [currentPathIndex]);
 
-    return (
-        <div className="absolute flex justify-center items-center w-full h-full blur-[500px] opacity-60">
-            <svg viewBox="-125 -125 250 250">
-                <defs>
-                    <linearGradient id="grad1" x1="0%" x2="100%" y1="0%" y2="0%">
-                        <stop offset="0%" stopColor="#8A35CE" />
-                        <stop offset="100%" stopColor="#21CF63" />
-                    </linearGradient>
-                </defs>
-                <path fill="url(#grad1)" d={currentPath} />
-            </svg>
-        </div>
-    );
+  return (
+    <div className={`z-10 flex w-[800px] h-[800px] items-center ${className ?? ""}`}>
+        <svg viewBox="-50 -50 100 100" className="blur-[1000px] opacity-50">
+          <defs>
+            <linearGradient id="grad1" x1="0%" x2="100%" y1="0%" y2="0%">
+              <stop offset="0%" stopColor="#8A35CE" />
+              <stop offset="100%" stopColor="#21CF63" />
+            </linearGradient>
+          </defs>
+          <path fill="url(#grad1)" d={currentPath} />
+        </svg>
+    </div>
+  );
 };
 
-export default BlobComponent;
+export default Blob;
